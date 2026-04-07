@@ -49,4 +49,14 @@ const registerService = async (req, res) => {
         .json({ message: "Registration successful", data: newUser });
 };
 
-export { loginService, registerService };
+const getProfileService = async (req, res) => {
+    const user = await User.findById(req.user._id).select("-password");
+
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ message: "Profile retrieved", data: user });
+};
+
+export { loginService, registerService, getProfileService };

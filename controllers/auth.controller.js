@@ -1,6 +1,10 @@
-import { loginService, registerService } from "../services/auth.service.js";
+import {
+    loginService,
+    registerService,
+    getProfileService,
+} from "../services/auth.service.js";
 
-const loginController = async (req, res) => {
+export const loginController = async (req, res) => {
     try {
         await loginService(req, res);
     } catch (error) {
@@ -8,7 +12,7 @@ const loginController = async (req, res) => {
     }
 };
 
-const registerController = async (req, res) => {
+export const registerController = async (req, res) => {
     try {
         await registerService(req, res);
     } catch (error) {
@@ -16,4 +20,10 @@ const registerController = async (req, res) => {
     }
 };
 
-export { loginController, registerController };
+export const getProfileController = async (req, res) => {
+    try {
+        await getProfileService(req, res);
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
