@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 
 // routes
 import authRoutes from "./routes/auth.routes.js";
+import supplierRoutes from "./routes/supplier.routes.js";
+import { authMiddleware } from "./middlewares/authMiddleware.js";
 
 dotenv.config();
 
@@ -14,6 +16,7 @@ app.use(express.json());
 
 connectDB();
 
+app.use("/api/suppliers", authMiddleware, supplierRoutes);
 app.use("/api/auth", authRoutes);
 
 app.listen(process.env.PORT, () => {

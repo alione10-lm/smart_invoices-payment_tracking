@@ -25,4 +25,4 @@ const validateSupplier = [
     handleValidation,
 ];
 
-export { handleValidation, validateSupplier };
+export { validateSupplier };

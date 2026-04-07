@@ -1,6 +1,6 @@
-import { Supplier } from "../models/supplier.model";
+import { Supplier } from "../models/supplier.model.js";
 
-const createSupplierService = async (req, res) => {
+export const createSupplierService = async (req, res) => {
     const { name, email, phone } = req.body;
 
     const supplier = await Supplier.create({
@@ -16,7 +16,7 @@ const createSupplierService = async (req, res) => {
     });
 };
 
-const getSuppliersService = async (req, res) => {
+export const getSuppliersService = async (req, res) => {
     const suppliers = await Supplier.find({ userId: req.user.id });
 
     return res.status(200).json({
@@ -25,7 +25,7 @@ const getSuppliersService = async (req, res) => {
     });
 };
 
-const getSupplierByIdService = async (req, res) => {
+export const getSupplierByIdService = async (req, res) => {
     const supplier = await Supplier.findOne({
         _id: req.params.id,
         userId: req.user.id,
@@ -41,7 +41,7 @@ const getSupplierByIdService = async (req, res) => {
     });
 };
 
-const updateSupplierService = async (req, res) => {
+export const updateSupplierService = async (req, res) => {
     const { name, email, phone } = req.body;
 
     const supplier = await Supplier.findOneAndUpdate(
@@ -60,9 +60,17 @@ const updateSupplierService = async (req, res) => {
     });
 };
 
-export {
-    createSupplierService,
-    getSuppliersService,
-    getSupplierByIdService,
-    updateSupplierService,
+export const deleteSupplierService = async (req, res) => {
+    const supplier = await Supplier.findOneAndDelete({
+        _id: req.params.id,
+        userId: req.user.id,
+    });
+
+    if (!supplier) {
+        return res.status(404).json({ message: "Supplier not found" });
+    }
+
+    return res.status(200).json({
+        message: "Supplier deleted successfully",
+    });
 };
