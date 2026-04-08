@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const invoiceSchema = new mongoose.Schema(
     {
+        descruption: {
+            type: String,
+        },
+
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
