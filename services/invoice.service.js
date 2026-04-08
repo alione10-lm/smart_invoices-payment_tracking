@@ -1,4 +1,4 @@
-import { Invoice } from "../models/invoice.model";
+import { Invoice } from "../models/invoice.model.js";
 import { Supplier } from "../models/supplier.model.js";
 
 export const createInvoiceService = async (req, res) => {

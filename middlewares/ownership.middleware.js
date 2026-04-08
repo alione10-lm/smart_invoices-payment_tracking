@@ -1,12 +1,10 @@
 import { Supplier } from "../models/supplier.model.js";
+import { Invoice } from "../models/invoice.model.js";
 
 export const supplierOwnershipMiddleware = async (req, res, next) => {
     const { id } = req.user;
 
-    console.log(req.params);
-
     const supplierId = req.params.id;
-
     const supplier = await Supplier.findById(supplierId);
 
     if (!supplier) {
@@ -17,6 +15,23 @@ export const supplierOwnershipMiddleware = async (req, res, next) => {
     }
 
     if (supplier.userId.toString() !== id) {
+        return res.status(403).json({
+            success: false,
+            message: "You don't have permission to access this resource",
+        });
+    }
+
+    next();
+};
+
+export const invoiceOwnershipMiddleware = async (req, res, next) => {
+    const { id } = req.user;
+
+    const invoiceId = req.params.id;
+
+    const invoice = await Invoice.findById(invoiceId);
+
+    if (invoice.userId.toString() !== id) {
         return res.status(403).json({
             success: false,
             message: "You don't have permission to access this resource",
