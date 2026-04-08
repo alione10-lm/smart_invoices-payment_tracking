@@ -9,6 +9,15 @@ const supplierSchema = new mongoose.Schema(
         contact: {
             type: String,
         },
+        email: {
+            type: String,
+        },
+        phone: {
+            type: String,
+        },
+        adress: {
+            type: String,
+        },
         userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",

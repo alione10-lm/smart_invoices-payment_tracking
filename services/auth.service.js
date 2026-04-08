@@ -32,7 +32,7 @@ const registerService = async (req, res) => {
 
     const usersExists = await User.findOne({ email });
     if (usersExists) {
-        return res.status(400).json({ message: "Email already in use" });
+        return res.status(422).json({ message: "Email already in use" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

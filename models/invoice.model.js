@@ -22,8 +22,8 @@ const invoiceSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ["pending", "paid"],
-            default: "pending",
+            enum: ["partially_paid", "paid", "unpaid"],
+            default: "unpaid",
         },
     },
     { timestamps: true },

@@ -15,7 +15,12 @@ const handleValidation = (req, res, next) => {
 };
 
 const validateRegister = [
-    body("name").trim().notEmpty().withMessage("Name is required"),
+    body("name")
+        .trim()
+        .notEmpty()
+        .withMessage("Name is required")
+        .isLength({ min: 2 })
+        .withMessage("Name must be at least 2 characters"),
 
     body("email")
         .trim()
@@ -32,11 +37,21 @@ const validateRegister = [
     body("password_confirmation")
         .notEmpty()
         .withMessage("Password confiramtion  is required")
-        .custom((value, { req }) => {
+        .custom((value, { req, res }) => {
             if (value !== req.body.password) {
-                throw new Error(
-                    "password confiramtion doesn't match the password ",
-                );
+                // throw new Error(
+                //     "password confiramtion doesn't match the password ",
+                // );
+                res.status(400).json({
+                    success: false,
+                    errors: [
+                        {
+                            field: "password_confirmation",
+                            message:
+                                "password confiramtion doesn't match the password ",
+                        },
+                    ],
+                });
             }
             return true;
         }),

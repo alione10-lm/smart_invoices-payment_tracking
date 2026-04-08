@@ -16,11 +16,17 @@ export const handleValidation = (req, res, next) => {
 
 const validateSupplier = [
     body("name").trim().notEmpty().withMessage("Name is required"),
-
     body("phone")
+        .optional()
         .isMobilePhone("ar-MA")
         .trim()
         .withMessage("Invalid phone number format"),
+
+    body("email").optional().isEmail().withMessage("Invalid email format"),
+
+    body("adress").optional().trim(),
+
+    body("contact").optional().trim(),
 
     handleValidation,
 ];

@@ -1,12 +1,14 @@
 import { Supplier } from "../models/supplier.model.js";
 
 export const createSupplierService = async (req, res) => {
-    const { name, email, phone } = req.body;
+    const { name, email, phone, contact, adress } = req.body;
 
     const supplier = await Supplier.create({
         name,
         email,
         phone,
+        contact,
+        adress,
         userId: req.user.id,
     });
 
