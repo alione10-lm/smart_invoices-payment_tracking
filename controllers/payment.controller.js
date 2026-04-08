@@ -1,14 +1,14 @@
 import {
-    getSuppliersService,
-    createSupplierService,
-    updateSupplierService,
-    getSupplierByIdService,
-    deleteSupplierService,
-} from "../services/supplier.service.js";
+    createPaymentService,
+    updatePaymentService,
+    deletePaymentService,
+    getPaymentsService,
+    getPaymentByIdService,
+} from "../services/payment.service.js";
 
-export const createSupplierController = async (req, res) => {
+export const createPaymentController = async (req, res) => {
     try {
-        await createSupplierService(req, res);
+        await createPaymentService(req, res);
     } catch (error) {
         return res.status(500).json({
             message: "Server error",
@@ -17,9 +17,31 @@ export const createSupplierController = async (req, res) => {
     }
 };
 
-export const getSupplierByIdController = async (req, res) => {
+export const getPaymentsController = async (req, res) => {
     try {
-        await getSupplierByIdService(req, res);
+        await getPaymentsService(req, res);
+    } catch (error) {
+        return res.status(500).json({
+            message: "Server error",
+
+            error: error.message,
+        });
+    }
+};
+
+export const getPaymentByIdController = async (req, res) => {
+    try {
+        await getPaymentByIdService(req, res);
+    } catch (error) {
+        return res.status(500).json({
+            message: "Server error",
+            error: error.message,
+        });
+    }
+};
+export const updatePaymentController = async (req, res) => {
+    try {
+        await updatePaymentService(req, res);
     } catch (error) {
         return res.status(500).json({
             message: "Server error",
@@ -28,31 +50,9 @@ export const getSupplierByIdController = async (req, res) => {
     }
 };
 
-export const getSuppliersController = async (req, res) => {
+export const deletePaymentController = async (req, res) => {
     try {
-        await getSuppliersService(req, res);
-    } catch (error) {
-        return res.status(500).json({
-            message: "Server error",
-            error: error.message,
-        });
-    }
-};
-
-export const updateSupplierController = async (req, res) => {
-    try {
-        await updateSupplierService(req, res);
-    } catch (error) {
-        return res.status(500).json({
-            message: "Server error",
-            error: error.message,
-        });
-    }
-};
-
-export const deleteSupplierController = async (req, res) => {
-    try {
-        await deleteSupplierService(req, res);
+        await deletePaymentService(req, res);
     } catch (error) {
         return res.status(500).json({
             message: "Server error",

@@ -7,8 +7,13 @@ import {
     updateInvoiceController,
     deleteInvoiceController,
 } from "../controllers/invoice.controller.js";
+
 import { validateInvoice } from "../middlewares/validateInvoice.middleware.js";
 import { invoiceOwnershipMiddleware } from "../middlewares/ownership.middleware.js";
+import {
+    createPaymentController,
+    getPaymentsController,
+} from "../controllers/payment.controller.js";
 
 const router = Router();
 
@@ -27,5 +32,13 @@ router.put(
     updateInvoiceController,
 );
 router.delete("/:id", invoiceOwnershipMiddleware, deleteInvoiceController);
+
+router.post(
+    "/:id/payments",
+    invoiceOwnershipMiddleware,
+    createPaymentController,
+);
+
+router.get("/:id/payments", invoiceOwnershipMiddleware, getPaymentsController);
 
 export default router;
