@@ -39,24 +39,3 @@ export const getPaymentByIdController = async (req, res) => {
         });
     }
 };
-export const updatePaymentController = async (req, res) => {
-    try {
-        await updatePaymentService(req, res);
-    } catch (error) {
-        return res.status(500).json({
-            message: "Server error",
-            error: error.message,
-        });
-    }
-};
-
-export const deletePaymentController = async (req, res) => {
-    try {
-        await deletePaymentService(req, res);
-    } catch (error) {
-        return res.status(500).json({
-            message: "Server error",
-            error: error.message,
-        });
-    }
-};
