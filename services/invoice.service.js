@@ -28,10 +28,23 @@ export const createInvoiceService = async (req, res) => {
 };
 
 export const getInvoicesService = async (req, res) => {
-    const invoices = await Invoice.find({ userId: req.user.id }).populate(
-        "supplierId",
-        "name",
-    );
+    const { status, supplierId } = req.query;
+
+    console.log(status, supplierId);
+
+    const query = {};
+
+    if (status) {
+        query.status = status;
+    }
+    if (supplierId) {
+        query.supplierId = supplierId;
+    }
+
+    const invoices = await Invoice.find({
+        userId: req.user.id,
+        ...query,
+    }).populate("supplierId", "name");
 
     return res.status(200).json({
         message: "Invoices retrieved successfully",

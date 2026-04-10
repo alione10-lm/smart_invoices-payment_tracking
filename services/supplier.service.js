@@ -21,7 +21,14 @@ export const createSupplierService = async (req, res) => {
 };
 
 export const getSuppliersService = async (req, res) => {
-    const suppliers = await Supplier.find({ userId: req.user.id });
+    const { name } = req.query;
+
+    const query = {};
+
+    if (name) {
+        query.name = name;
+    }
+    const suppliers = await Supplier.find({ userId: req.user.id, ...query });
 
     return res.status(200).json({
         message: "Suppliers retrieved successfully",
