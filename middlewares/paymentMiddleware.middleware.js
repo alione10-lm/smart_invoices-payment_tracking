@@ -1,4 +1,5 @@
-import { Invoice } from "../models/invoice.model";
+import { Invoice } from "../models/invoice.model.js";
+import { Payment } from "../models/payment.model.js";
 
 export const validatePayment = async (req, res, next) => {
     const { amount } = req.body;
@@ -15,7 +16,14 @@ export const validatePayment = async (req, res, next) => {
         { $group: { _id: "$invoiceId", totalPaid: { $sum: "$amount" } } },
     ]);
 
+    console.log(totalPayments.totalPaid);
     const totalPaid = totalPayments.length > 0 ? totalPayments[0].totalPaid : 0;
+
+    if (invoice.status === "paid") {
+        return res.status(400).json({
+            message: "Invoice is already paid",
+        });
+    }
 
     if (invoice.amount < amount) {
         return res.status(400).json({

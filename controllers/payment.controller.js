@@ -1,7 +1,5 @@
 import {
     createPaymentService,
-    updatePaymentService,
-    deletePaymentService,
     getPaymentsService,
     getPaymentByIdService,
 } from "../services/payment.service.js";

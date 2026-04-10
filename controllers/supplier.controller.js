@@ -4,6 +4,7 @@ import {
     updateSupplierService,
     getSupplierByIdService,
     deleteSupplierService,
+    supplierStatisticsService,
 } from "../services/supplier.service.js";
 
 export const createSupplierController = async (req, res) => {
@@ -53,6 +54,17 @@ export const updateSupplierController = async (req, res) => {
 export const deleteSupplierController = async (req, res) => {
     try {
         await deleteSupplierService(req, res);
+    } catch (error) {
+        return res.status(500).json({
+            message: "Server error",
+            error: error.message,
+        });
+    }
+};
+
+export const supplierStatisticsController = async (req, res) => {
+    try {
+        await supplierStatisticsService(req, res);
     } catch (error) {
         return res.status(500).json({
             message: "Server error",

@@ -6,6 +6,7 @@ import {
     getSupplierByIdController,
     updateSupplierController,
     deleteSupplierController,
+    supplierStatisticsController,
 } from "../controllers/supplier.controller.js";
 import { validateSupplier } from "../middlewares/validateSupplier.middleware.js";
 
@@ -23,5 +24,11 @@ router.put(
     updateSupplierController,
 );
 router.delete("/:id", supplierOwnershipMiddleware, deleteSupplierController);
+
+router.get(
+    "/:id/stats",
+    supplierOwnershipMiddleware,
+    supplierStatisticsController,
+);
 
 export default router;

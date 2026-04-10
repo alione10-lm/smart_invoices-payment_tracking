@@ -8,12 +8,14 @@ import {
     deleteInvoiceController,
 } from "../controllers/invoice.controller.js";
 
-import { validateInvoice } from "../middlewares/validateInvoice.middleware.js";
-import { invoiceOwnershipMiddleware } from "../middlewares/ownership.middleware.js";
 import {
     createPaymentController,
     getPaymentsController,
 } from "../controllers/payment.controller.js";
+
+import { invoiceOwnershipMiddleware } from "../middlewares/ownership.middleware.js";
+import { validateInvoice } from "../middlewares/validateInvoice.middleware.js";
+import { validatePayment } from "../middlewares/paymentMiddleware.middleware.js";
 
 const router = Router();
 
@@ -36,6 +38,8 @@ router.delete("/:id", invoiceOwnershipMiddleware, deleteInvoiceController);
 router.post(
     "/:id/payments",
     invoiceOwnershipMiddleware,
+
+    validatePayment,
     createPaymentController,
 );
 
