@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const invoiceSchema = new mongoose.Schema(
     {
-        descruption: {
+        description: {
             type: String,
         },
 

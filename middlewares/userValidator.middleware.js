@@ -57,6 +57,7 @@ const validateRegister = [
         }),
 
     body("role")
+        .optional()
         .isIn(["client", "admin"])
         .withMessage("Role must be client or admin"),
 
