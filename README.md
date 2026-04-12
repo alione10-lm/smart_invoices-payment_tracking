@@ -164,7 +164,7 @@ JWT_SECRET=your_jwt_secret
 ## Sécurité
 
 - Mots de passe hachés avec **bcrypt**
-- Tokens JWT stockés en **HTTP-only cookies**
+- Tokens JWT stockés en headers authorization
 - Middleware d'authentification sur toutes les routes protégées
 - Middleware de rôle `admin` pour les routes admin
 - Isolation des données par `client` ObjectId sur chaque query
