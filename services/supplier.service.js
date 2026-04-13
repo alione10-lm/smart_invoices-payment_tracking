@@ -1,5 +1,7 @@
 import { Invoice } from "../models/invoice.model.js";
 import { Supplier } from "../models/supplier.model.js";
+import { Payment } from "../models/payment.model.js";
+
 import mongoose from "mongoose";
 
 export const createSupplierService = async (req, res) => {
@@ -21,18 +23,45 @@ export const createSupplierService = async (req, res) => {
 };
 
 export const getSuppliersService = async (req, res) => {
-    const { name } = req.query;
+    const { name, invoiceId } = req.query;
 
     const query = {};
 
     if (name) {
         query.name = name;
     }
-    const suppliers = await Supplier.find({ userId: req.user.id, ...query });
+
+    // const suppliers = await Supplier.find({ userId: req.user.id, ...query });
+
+    const suppliersWithInvoices = await Supplier.aggregate([
+        {
+            $match: {
+                userId: req.user.id,
+            },
+        },
+        {
+            $group: {
+                _id: null,
+            },
+        },
+        // {
+        //     $lookup: {
+        //         from: "invoices",
+        //         localField: "_id",
+        //         foreignField: "supplierId",
+        //         as: "invoices",
+        //     },
+        // },
+        // {
+        //     $project: {
+        //         invoices: 1,
+        //     },
+        // },
+    ]);
 
     return res.status(200).json({
         message: "Suppliers retrieved successfully",
-        suppliers,
+        suppliersWithInvoices,
     });
 };
 
@@ -105,13 +134,10 @@ export const supplierStatisticsService = async (req, res) => {
                 _id: 1,
                 name: 1,
 
-                // total invoices
                 totalInvoices: { $size: "$invoices" },
 
-                // total amount
                 totalAmount: { $sum: "$invoices.amount" },
 
-                // total paid
                 totalPaid: {
                     $sum: {
                         $map: {
@@ -128,7 +154,6 @@ export const supplierStatisticsService = async (req, res) => {
                     },
                 },
 
-                // total remaining
                 totalRemaining: {
                     $sum: {
                         $map: {
@@ -144,50 +169,19 @@ export const supplierStatisticsService = async (req, res) => {
                         },
                     },
                 },
-
-                // percentage (fixed)
-                percentage: {
-                    $cond: {
-                        if: { $eq: [{ $sum: "$invoices.amount" }, 0] },
-                        then: 0,
-                        else: {
-                            $multiply: [
-                                {
-                                    $divide: [
-                                        {
-                                            $sum: {
-                                                $map: {
-                                                    input: {
-                                                        $filter: {
-                                                            input: "$invoices",
-                                                            as: "inv",
-                                                            cond: {
-                                                                $eq: [
-                                                                    "$$inv.status",
-                                                                    "paid",
-                                                                ],
-                                                            },
-                                                        },
-                                                    },
-                                                    as: "inv",
-                                                    in: "$$inv.amount",
-                                                },
-                                            },
-                                        },
-                                        { $sum: "$invoices.amount" },
-                                    ],
-                                },
-                                100,
-                            ],
-                        },
-                    },
-                },
             },
         },
     ]);
 
     return res.status(200).json({
         message: "Supplier statistics retrieved successfully",
-        data: { supplier },
+        data: {
+            ...supplier[0],
+
+            percentage:
+                supplier[0].totalAmount === 0
+                    ? 0
+                    : (supplier[0].totalPaid / supplier[0].totalAmount) * 100,
+        },
     });
 };
